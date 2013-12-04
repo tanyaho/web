@@ -1,7 +1,0 @@
-[core]
-	repositoryformatversion = 0
-	filemode = true
-	bare = false
-[remote "origin"]
-	url = http://github.com/tanyaho/web.git
-	fetch = +refs/heads/*:refs/remotes/origin/*
