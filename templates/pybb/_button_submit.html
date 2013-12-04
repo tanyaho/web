@@ -1,0 +1,5 @@
+{% load i18n %}
+<section id="buttons">
+    <input type="submit" class="btn btn-primary" id="submitbtn"
+           value="{% if submit_text %}{{ submit_text }}{% else %}{% trans " Submit" %}{% endif %}" />
+</section>

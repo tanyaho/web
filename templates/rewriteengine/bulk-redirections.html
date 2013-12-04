@@ -1,0 +1,98 @@
+{% extends "site_base.html" %}
+{% block extra_script %}
+
+<script>
+
+
+$(document).ready(function () {
+    $(".allrules").css( "display", "none");
+
+    $("#recipient").change(function(){
+    $(".allrules").css( "display", "none");
+        var title =  $(this).find('option:selected').attr('title');
+        $("." + title).css( "display", "");
+
+    });
+
+    $(".chooseforme :checkbox").click(function() {
+            $(".selmenu").prop('disabled', false);
+
+            $(".chooseforme :checkbox:checked").each(function() {
+            $(".selmenu").prop('disabled', true);
+
+
+            });
+
+    });
+
+
+        });
+
+
+      </script>
+
+{% endblock %}
+{% block body %}
+<h1>Generate redirections for multiple URLs</h1>
+<form action="/tools/bulk-redirections/" method="post" id="hongkiat-form"  enctype="multipart/form-data">
+    {% csrf_token %}
+    {# Include the hidden fields #}
+    {% for hidden in form.hidden_fields %}
+    {{ hidden }}
+    {% endfor %}
+    {# Include the visible fields #}
+    {{ form.non_field_errors }}
+<div class="fieldWrapper">
+        {{ form.name.errors }}
+        <h3>Rules:</h3>
+       <select id="recipient" name="name" class="selmenu selectrules">
+           <option value="" title="Select">Select...</option>
+        {% for item in all_rules %}
+            <option value="{{ item.name }}" title="rule{{ item.id }}">{{ item.name }}</option>
+        {% endfor %}
+
+		</select>
+    <section class="chooseforme">
+      <div class="squaredTwo">
+         <input type="checkbox"  id="choose" name="chooseforme" value="choose" />
+            <label for="choose"><span>Choose for me</span></label>
+      </div>
+    </section>
+    </div>
+  <div class="spacebottom"></div>
+    <div class="fieldWrapper">
+        {% for item in all_rules %}
+            <div class="allrules rule{{ item.id }}">
+                Pattern: {% if item.condition %}#{{ item.condition }}{% endif %}<br />
+                {{ item.rule|linebreaks }}
+            </div>
+        {% endfor %}
+
+    </div>
+    <br class="spacebottom" />
+<input id="attachments" name="filedocs" type="file"> <a href="/media/media/documents/redirectionstest.xlsx">Example template</a>
+
+    <section id="buttons">
+        <input type="submit" value="Get rules" class="submitbtn" id="submitbtn"/>
+    </section>
+</form>
+{% if get_rules %}
+        <br class="spacebottom" />
+     <div>
+         <h3>Output</h3>
+
+         {% for item in get_rules %}
+            {% if item.condition %}
+                #{{ item.condition }}<br />
+            {% endif %}
+            {% if item.CMS %}
+                # Specify for this CMS: {{ item.CMS }}<br />
+            {% endif %}
+            {{ item.rule|linebreaks }}
+         {% endfor %}
+
+     </div>
+  {% endif %}
+        <br class="spacebottom" />
+        <div class="errorlist">{{ htaccess_error }}</div>
+{% endblock %}

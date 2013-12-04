@@ -1,0 +1,46 @@
+{% load staticfiles %}
+{% load menu %}
+{% get_menu_list %}
+<header id="header">
+    <div class="container">
+        <div class="clearfix">
+            <div class="logo">
+                <img src="{% static 'img/Logo.png' %}">
+            </div>
+            <div class="call">
+
+            </div>
+            <div id="useraccount">
+                {% if user.is_authenticated %}
+                <span>Logged in as <a href="/forum/users/{{ user.username }}/">{{ user.username }}</a></span> <a
+                    href="/accounts/logout/?next={{ request.path|urlencode }}"><img
+                    src="{% static 'images/logout.png' %}"/></a>
+                {% else %}
+                <a href="/accounts/login/?next={{ request.path|urlencode }}"><img
+                        src="{% static 'images/login.png' %}"/></a> or <a
+                    href="/accounts/register/?next={{ request.path|urlencode }}"><img
+                    src="{% static 'images/register.png' %}"/></a>
+
+                {% endif %}
+            </div>
+
+            <form id="searchForm" action="/search/">
+                <fieldset>
+                    <div class="input">
+                        <input type="text" name="q" id="s" value="Search blogs"/>
+                    </div>
+                    <input type="submit" id="searchSubmit" value=""/>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+    <ul id="nav">
+        <li class="top"><a href="/" class="top_link"><span>Home</span></a></li>
+        {% for item in site_menu %}
+        <li class="top"><a href="/{{ item.page_slug }}" class="top_link"><span>{{ item.title }}</span></a></li>
+        {% endfor %}
+        <li class="top"><a href="/blogs/" class="top_link"><span>Blog</span></a></li>
+        <li class="top"><a href="/forum/" class="top_link"><span>Forum</span></a></li>
+        <li class="top"><a href="/contact/" class="top_link"><span>Contact</span></a></li>
+    </ul>
+</header>

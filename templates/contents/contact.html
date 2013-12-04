@@ -1,0 +1,47 @@
+{% extends "site_base.html" %}
+{% block body %}
+<h1>Contact Us</h1>
+
+<form action="/contact/" method="post" id="hongkiat-form">
+    {% csrf_token %}
+    {# Include the hidden fields #}
+    {% for hidden in form.hidden_fields %}
+    {{ hidden }}
+    {% endfor %}
+    {# Include the visible fields #}
+    {{ form.non_field_errors }}
+    <div class="fieldWrapper">
+        {{ form.name.errors }}
+
+        <input id="id_name" maxlength="100" name="name" type="text" class="txtinput"
+               placeholder="Name:">
+    </div>
+    <div class="fieldWrapper">
+        {{ form.subject.errors }}
+
+        <input id="id_subject" maxlength="100" name="subject" type="text" class="txtinput"
+               placeholder="Subject:">
+    </div>
+    <div class="fieldWrapper">
+        {{ form.sender.errors }}
+
+        <input id="id_sender" name="sender" type="text" class="txtinput" placeholder="Email:">
+    </div>
+    <div class="fieldWrapper">
+        {{ form.message.errors }}
+
+        <textarea cols="40" id="bbcode" name="message" rows="5" class="txtblock"
+                  placeholder="Message:"></textarea>
+    </div>
+
+    <div class="fieldWrapper">
+        {{ form.cc_myself.errors }}
+        <label for="id_cc_myself">CC yourself?</label>
+        {{ form.cc_myself }}
+    </div>
+    <section id="buttons">
+        <input type="reset" name="reset" id="resetbtn" class="resetbtn" value="Reset">
+        <input type="submit" value="Send message" class="submitbtn" id="submitbtn"/>
+    </section>
+</form>
+{% endblock %}

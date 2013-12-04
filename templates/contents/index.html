@@ -1,0 +1,32 @@
+{% extends "site_base.html" %}
+    {% block extra_meta %}
+         {% if content.meta_title %}
+        <title>{{ content.meta_title }}</title>
+        {% endif %}
+         {% if content.meta_description %}
+        <meta name="description" content="{{ content.meta_description }}" />
+        {% endif %}
+    {% endblock %}
+{% load menu %}
+        {% block home_slideshow %}
+        {% if slideshowcollection %}
+        <ul class="bxslider">
+            {% for slide in slideshowcollection %}
+            <li><img src='/media/{{ slide.url }}' title="{{ slide.alt }}"/></li>
+            {% endfor %}
+
+        </ul>
+         {% endif %}
+        {% endblock %}
+{% block body %}
+
+<h1>{{ content.title }}</h1>
+{{ content.description|safe}}
+{% if imagecollection %}
+<ul>
+    {% for image in imagecollection %}
+    <li><img src='/media/{{ image.url }}' title="{{ image.alt }}"/></li>
+    {% endfor %}
+</ul>
+ {% endif %}
+{% endblock %}

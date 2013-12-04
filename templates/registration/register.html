@@ -1,0 +1,32 @@
+{% extends "site_base.html" %}
+{% block body %}
+<h1>Create an account</h1>
+{% block content %}
+
+{% if form.errors %}
+<p class="errorlist">Please check the required field, the passwords might not be matched.</p>
+{% endif %}
+<form action="" method="post" id="hongkiat-form">
+    {% csrf_token %}
+    {{ form.username.errors}}
+    <input id="id_name" maxlength="30" name="username" type="text" class="txtinput" placeholder="Username:">
+
+    <p class="helptext">Required. 30 characters or fewer. Letters, digits and @/./+/-/_ only.</p>
+
+    {{ form.email.errors}}
+    <input id="id_sender" name="email" type="email" class="txtinput" placeholder="Email:">
+    {{ form.password1.errors}}
+    <input id="id_subject" name="password1" type="password" class="txtinput" placeholder="Password:">
+    {{ form.password2.errors}}
+    <input id="id_subject" name="password2" type="password" class="txtinput" placeholder="Password confirmation:">
+
+    <p class="helptext">Enter the same password as above, for verification.</p>
+
+    <section id="buttons">
+        <input type="reset" name="reset" id="resetbtn" class="resetbtn" value="Reset">
+        <input type="submit" value="Create the account" class="submitbtn" id="submitbtn">
+    </section>
+    <input type="hidden" name="next" value="/accounts/login/?next={{ nextpage }}"/>
+</form>
+{% endblock %}
+{% endblock %}

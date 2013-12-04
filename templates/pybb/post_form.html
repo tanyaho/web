@@ -1,0 +1,54 @@
+{% load url from future %}
+{% load staticfiles %}
+{% load i18n pybb_tags %}
+<form class="post-form" id="hongkiat-form" action="
+    {% if forum %}
+        {% url 'pybb:add_topic' forum.pk %}
+    {% else %}
+        {% if topic %}
+            {% url 'pybb:add_post' topic.pk %}
+        {% else %}
+            {% url 'pybb:edit_post' pk=object.pk %}
+        {% endif %}
+    {% endif %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <fieldset>
+        {% include "pybb/form_errors.html" %}
+        {% if form.name %}
+        <div class="form-control">
+            <input id="id_subject" name="name" type="text" class="txtinput" placeholder="Subject:"
+                   value="{{ form.name.value }}">
+            {{ form.name.errors }}
+        </div>
+        {% endif %}
+        {% if form.login %}
+        <div class="form-control">
+            <input id="id_name" name="login" class="txtinput" placeholder="Username:" type="text"
+                   value="{{ form.login.value }}" readonly>
+            {{ form.login.errors }}
+        </div>
+        {% endif %}
+
+        {% if form.body %}
+        <div id='emoticons'>
+            {% for smile, url in form.available_smiles.items %}
+            <a href='#' title='{{ smile|safe }}'><img src='{% static "" %}{{ form.smiles_prefix }}{{ url }}'></a>
+            {% endfor %}
+        </div>
+        <div class="form-control">
+            <textarea cols="40" id="bbcode" name="body" rows="10" class="txtblock" placeholder="Message:">{{ form.body.value }}</textarea>
+            {{ form.body.errors }}
+        </div>
+
+        {% endif %}
+
+        <div class="hide">
+            {% if form.poll_type %}
+            {% include "pybb/poll_edit_form.html" %}
+            {% endif %}
+        </div>
+        {% include "pybb/attachments_formset.html" %}
+        <p class="submit">{% include "pybb/_button_submit.html" %}</p>
+    </fieldset>
+</form>
