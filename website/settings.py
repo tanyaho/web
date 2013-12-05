@@ -14,7 +14,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': '/home/tanyaho/website/website.db', # Or path to database file if using sqlite3.
+        'NAME': PROJECT_PATH + '/website.db', # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
         'USER': '',
         'PASSWORD': '',
@@ -51,7 +51,7 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
-MEDIA_ROOT = '/home/tanyaho/website/media'
+MEDIA_ROOT = PROJECT_PATH + '/media'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -62,7 +62,7 @@ MEDIA_URL = '/media/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = '/home/tanyaho/website/contents/static'
+STATIC_ROOT = PROJECT_PATH + '/contents/static'
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
@@ -121,7 +121,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    '/home/tanyaho/website/templates',
+    PROJECT_PATH + '/templates',
 
 )
 AUTH_PROFILE_MODULE = "account.UserProfile"
@@ -194,4 +194,4 @@ PYBB_ATTACHMENT_ENABLE = True
 PYBB_TEMPLATE = 'pybb/base.html'
 PYBB_AUTO_USER_PERMISSIONS = True
 PYBB_ATTACHMENT_UPLOAD_TO =  'media/pybb_upload/attachments/'
-CKEDITOR_UPLOAD_PATH = "/home/tanyaho/website/media/upload/"
+CKEDITOR_UPLOAD_PATH = PROJECT_PATH + '/media/upload/'
