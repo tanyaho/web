@@ -3,6 +3,8 @@ import re
 from rewriteengine.models import htaccess
 import tempfile
 import shutil
+from website.settings import FILE_UPLOAD_DIR
+
 
 def handle_uploaded_file(source):
     fd, filepath = tempfile.mkstemp(prefix=source.name, dir=FILE_UPLOAD_DIR)
