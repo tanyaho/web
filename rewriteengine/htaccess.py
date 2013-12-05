@@ -4,9 +4,6 @@ from rewriteengine.models import htaccess
 import tempfile
 import shutil
 
-FILE_UPLOAD_DIR = '/home/tanyaho/website/media/documents/'
-
-
 def handle_uploaded_file(source):
     fd, filepath = tempfile.mkstemp(prefix=source.name, dir=FILE_UPLOAD_DIR)
     with open(filepath, 'wb') as dest:
