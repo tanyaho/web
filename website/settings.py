@@ -195,3 +195,5 @@ PYBB_TEMPLATE = 'pybb/base.html'
 PYBB_AUTO_USER_PERMISSIONS = True
 PYBB_ATTACHMENT_UPLOAD_TO =  'media/pybb_upload/attachments/'
 CKEDITOR_UPLOAD_PATH = PROJECT_PATH + '/media/upload/'
+FILE_UPLOAD_DIR = PROJECT_PATH + '/media/documents/'
+
