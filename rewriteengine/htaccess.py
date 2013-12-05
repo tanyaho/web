@@ -73,7 +73,7 @@ def get_htaccess_rules(rule_name, get_rules, htaccess_error, directing_url, dire
 
 def get_rules_name(directing_url, directed_url):
     directing_query, directing_url, directed_host, full_directed_url, directed_url = get_code(directing_url, directed_url)
-    get_rules = htaccess.objects.all(redirection=True)
+    get_rules = htaccess.objects.all().filter(redirection=True)
     rule_check = ''
     htaccess_error = ''
     rule_name = ''
