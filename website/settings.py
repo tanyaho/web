@@ -1,9 +1,9 @@
 # Django settings for website project.
 import os
-if os.environ['PROJECT_PATH'] != "":
+PROJECT_PATH = os.path.abspath(os.path.dirname(__name__))
+if os.getenv('PROJECT_PATH'):
     PROJECT_PATH = os.environ['PROJECT_PATH']
-else:
-    PROJECT_PATH = os.path.abspath(os.path.dirname(__name__))
+
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
