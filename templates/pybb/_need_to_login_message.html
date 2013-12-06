@@ -1,0 +1,5 @@
+{% load url from future %}
+{% load i18n %}
+<a href="{% url 'registration_register' %}?next={{ request.path|urlencode }}">{% trans "Register"
+    %}</a> {% trans "or" %} <a href="{% url 'auth_login' %}?next={{ request.path|urlencode }}">{% trans "login"
+    %}</a> {% trans "to create to post a reply" %}.

@@ -1,0 +1,23 @@
+{% load sidebar %}
+{% get_sidebar_list %}
+<div class="main-right">
+    <a href="/contact/" class="button">Send an enquiry</a>
+
+    <ul id="sliding-navigation">
+        <li class="sliding-element"><h3>Categories</h3></li>
+        {% for item in sidebar_menu %}
+        <li class="sliding-element"><a href="/blogs/category/{{ item.page_slug }}" class="top_link"><span>{{ item.title }}</span></a>
+        </li>
+        {% endfor %}
+    </ul>
+
+        <ul id="sliding-navigation">
+        <li class="sliding-element"><h3>Tools</h3></li>
+
+        <li class="sliding-element"><a href="/tools/htaccess/" class="top_link"><span>htaccess Rules</span></a>
+        <li class="sliding-element"><a href="/tools/bulk-redirections/" class="top_link"><span>Bulk Redirections</span></a>
+        <li class="sliding-element"><a href="/tools/sitemap-indexed/" class="top_link"><span>Check Sitemap Indexed</span></a>
+
+        </li>
+
+</div>

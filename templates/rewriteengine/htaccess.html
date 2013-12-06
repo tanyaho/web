@@ -1,0 +1,188 @@
+{% extends "site_base.html" %}
+{% block extra_script %}
+<script>
+(function($){
+
+    $.fn.extend({detachOptions: function(o) {
+        var s = this;
+        return s.each(function(){
+            var d = s.data('selectOptions') || [];
+            s.find(o).each(function() {
+                d.push($(this).detach());
+            });
+            s.data('selectOptions', d);
+        });
+    }, attachOptions: function(o) {
+        var s = this;
+        return s.each(function(){
+            var d = s.data('selectOptions') || [];
+            for (var i in d) {
+                if (d[i].is(o)) {
+                    s.append(d[i]);
+                    console.log(d[i]);
+                    // TODO: remove option from data array
+                }
+            }
+        });
+    }});
+
+})(jQuery);
+
+$(document).ready(function () {
+            $('.selmenu').detachOptions('.checkboxlist');
+            $('.chooseforme').hide();
+
+            $(".selmenu").prop('disabled', false);
+    $(".checklist :checkbox").click(function() {
+            $('.selmenu').detachOptions('.checkboxlist');
+            $('.chooseforme').hide();
+
+
+            $(".checklist :checkbox:checked").each(function() {
+                $('.selmenu').attachOptions("." + $(this).val());
+                $("." + $(this).val()).show();
+                $('.chooseforme').show();
+
+
+            });
+
+    });
+
+    $("#Redirection :checkbox").click(function() {
+            $('.chooseforme').hide();
+            $("Redirection :checkbox:checked").each(function() {
+                $("." + $(this).val()).show();
+                $('.chooseforme').show();
+
+            });
+
+    });
+
+    $(".chooseforme :checkbox").click(function() {
+            $(".selmenu").prop('disabled', false);
+
+            $(".chooseforme :checkbox:checked").each(function() {
+            $(".selmenu").prop('disabled', true);
+
+
+            });
+
+    });
+    $(".allrules").css( "display", "none");
+
+    $("#recipient").change(function(){
+    $(".allrules").css( "display", "none");
+        var title =  $(this).find('option:selected').attr('title');
+        $("." + title).css( "display", "");
+
+    });
+        });
+
+
+      </script>
+
+{% endblock %}
+{% block body %}
+<h1>Generate rules for .htaccess</h1>
+
+
+
+<form action="/tools/htaccess/" method="post" id="hongkiat-form">
+    {% csrf_token %}
+    {# Include the hidden fields #}
+    {% for hidden in form.hidden_fields %}
+    {{ hidden }}
+    {% endfor %}
+    {# Include the visible fields #}
+    {{ form.non_field_errors }}
+     <h3>Types:</h3>
+     <div class="checklist">
+     <section>
+      <div class="squaredTwo">
+         <input type="checkbox"  id="Redirection" name="redirection" value="listredirections" />
+            <label for="Redirection"><span>Redirection</span></label>
+      </div>
+    </section>
+
+     <section>
+      <div class="squaredTwo">
+         <input type="checkbox"  id="Rewrite" name="rewrite" value="listrewrite" />
+         <label for="Rewrite"><span>Rewrite</span></label>
+      </div>
+    </section>
+
+    </div>
+    <div class="fieldWrapper">
+        {{ form.name.errors }}
+        <h3>Rules:</h3>
+       <select id="recipient" name="name" tabindex="6" class="selmenu selectrules">
+           <option value="">Select...</option>
+        {% for item in all_rules %}
+            <option value="{{ item.name }}" title="rule{{ item.id}}" class="{% if item.redirection %}listredirections{% endif %} {% if item.rewrite %}listrewrite{% endif %} checkboxlist">{{ item.name }}</option>
+        {% endfor %}
+
+		</select>
+
+          <section class="chooseforme">
+      <div class="squaredTwo">
+         <input type="checkbox"  id="choose" name="chooseforme" value="choose" />
+            <label for="choose"><span>Choose for me</span></label>
+      </div>
+              <p>This option is available for redirections only</p>
+    </section>
+    </div>
+    <div class="spacebottom"></div>
+    <div class="fieldWrapper">
+        {% for item in all_rules %}
+            <div class="allrules rule{{ item.id }}">
+                Pattern: {% if item.condition %}#{{ item.condition }}{% endif %}<br />
+                {{ item.rule|linebreaks }}
+            </div>
+        {% endfor %}
+
+    </div>
+
+
+    <div class="fieldWrapper">
+        {{ form.Directing_URL.errors }}
+
+        <input id="id_subject" name="Directing_URL" type="text" class="txtinput" value="{{ directing_url }}"
+               placeholder="Directing/Rewriting URL:">
+    </div>
+
+    <div class="fieldWrapper">
+        {{ form.Directed_URL.errors }}
+
+        <input id="id_subject" name="Directed_URL" type="text" class="txtinput" value="{{ directed_url }}" placeholder="Directed/Rewritten URL:">
+    </div>
+
+
+    <div class="fieldWrapper">
+
+    </div>
+
+    <section id="buttons">
+        <input type="reset" name="reset" id="resetbtn" class="resetbtn" value="Reset">
+        <input type="submit" value="Get rules" class="submitbtn" id="submitbtn"/>
+    </section>
+</form>
+{% if get_rules %}
+        <br class="spacebottom" />
+     <div>
+         <h3>Output</h3>
+
+         {% for item in get_rules %}
+            {% if item.condition %}
+                #{{ item.condition }}<br />
+            {% endif %}
+            {% if item.CMS %}
+                # Specify for this CMS: {{ item.CMS }}<br />
+            {% endif %}
+            {{ item.rule|linebreaks }}
+         {% endfor %}
+
+     </div>
+  {% endif %}
+        <br class="spacebottom" />
+        <div class="errorlist">{{ htaccess_error }}</div>
+{% endblock %}
